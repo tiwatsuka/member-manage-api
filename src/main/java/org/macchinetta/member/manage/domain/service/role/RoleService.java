@@ -1,10 +1,10 @@
-package org.macchinetta.member.manage.domain.repository;
+package org.macchinetta.member.manage.domain.service.role;
 
 import java.util.Set;
 
 import org.macchinetta.member.manage.domain.model.Role;
 
-public interface RoleRepository {
+public interface RoleService {
 
 	Set<Role> findAll();
 
@@ -15,7 +15,5 @@ public interface RoleRepository {
 	boolean delete(long id);
 
 	boolean update(Role role);
-
-	boolean removRoleFromAllSubjects(long roleId);
 
 }

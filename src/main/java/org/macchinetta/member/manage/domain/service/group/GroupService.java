@@ -1,10 +1,10 @@
-package org.macchinetta.member.manage.domain.repository;
+package org.macchinetta.member.manage.domain.service.group;
 
 import java.util.Set;
 
 import org.macchinetta.member.manage.domain.model.Group;
 
-public interface GroupRepository {
+public interface GroupService {
 
 	Set<Group> findAll();
 
@@ -16,8 +16,4 @@ public interface GroupRepository {
 
 	boolean update(Group group);
 
-	boolean removeGroupFromAllSubjects(long id);
-	
-	boolean removeAllMembersInGroupFromAllSubjects(long id);
-	
 }

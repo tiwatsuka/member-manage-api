@@ -1,10 +1,10 @@
-package org.macchinetta.member.manage.domain.repository;
+package org.macchinetta.member.manage.domain.service.tag;
 
 import java.util.Set;
 
 import org.macchinetta.member.manage.domain.model.Tag;
 
-public interface TagRepository {
+public interface TagService {
 
 	Set<Tag> findAll();
 
@@ -15,7 +15,5 @@ public interface TagRepository {
 	boolean delete(long id);
 
 	boolean update(Tag tag);
-
-	boolean removeTagFromAllSubject(long id);
 
 }

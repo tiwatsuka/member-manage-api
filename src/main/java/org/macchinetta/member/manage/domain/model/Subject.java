@@ -10,10 +10,10 @@ public class Subject implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	long id;
+	private long id;
 
-	String name;
+	private String name;
 
-	Set<Tag> tags;
+	private Set<Tag> tags;
 
 }

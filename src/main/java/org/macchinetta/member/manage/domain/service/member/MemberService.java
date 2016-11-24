@@ -1,14 +1,12 @@
-package org.macchinetta.member.manage.domain.repository;
+package org.macchinetta.member.manage.domain.service.member;
 
 import java.util.Set;
 
 import org.macchinetta.member.manage.domain.model.Member;
 
-public interface MemberRepository {
+public interface MemberService {
 
 	Set<Member> findAll();
-	
-	Set<Member> findByGroupId(long groupId);
 	
 	Member findOne(long id);
 
@@ -21,7 +19,4 @@ public interface MemberRepository {
 	boolean addRole(long subjectId, long groupId, long memberId, long roleId);
 
 	boolean removeRole(long subjectId, long groupId, long memberId, long roleId);
-	
-	boolean removeMemberFromAllSubject(long memberId);
-
 }

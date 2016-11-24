@@ -9,12 +9,12 @@ public class Member implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	long id;
+	private long id;
 
-	String name;
+	private String name;
 
-	String email;
+	private String email;
 
-	String phone;
+	private String phone;
 
 }

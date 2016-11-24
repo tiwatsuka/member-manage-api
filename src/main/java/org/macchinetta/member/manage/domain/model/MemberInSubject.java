@@ -1,16 +1,17 @@
 package org.macchinetta.member.manage.domain.model;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import lombok.Data;
 
 @Data
-public class Tag implements Serializable{
+public class MemberInSubject implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	private long id;
+	private Member member;
 
-	private String name;
+	private Set<Role> roles;
 
 }
