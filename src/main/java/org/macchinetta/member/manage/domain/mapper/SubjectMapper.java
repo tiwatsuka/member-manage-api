@@ -1,12 +1,14 @@
-package org.macchinetta.member.manage.domain.repository;
+package org.macchinetta.member.manage.domain.mapper;
 
 import java.util.Set;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.macchinetta.member.manage.domain.model.Group;
 import org.macchinetta.member.manage.domain.model.Subject;
 import org.macchinetta.member.manage.domain.model.SubjectDetails;
 
-public interface SubjectRepository {
+@Mapper
+public interface SubjectMapper {
 
 	Set<Subject> findAll();
 	

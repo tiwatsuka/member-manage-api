@@ -2,8 +2,8 @@ package org.macchinetta.member.manage.domain.service.tag;
 
 import java.util.Set;
 
+import org.macchinetta.member.manage.domain.mapper.TagMapper;
 import org.macchinetta.member.manage.domain.model.Tag;
-import org.macchinetta.member.manage.domain.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TagServiceImpl implements TagService {
 
 	@Autowired
-	TagRepository tagRepository;
+	TagMapper tagRepository;
 
 	@Override
 	public Set<Tag> findAll() {

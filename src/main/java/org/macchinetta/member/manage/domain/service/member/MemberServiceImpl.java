@@ -2,8 +2,8 @@ package org.macchinetta.member.manage.domain.service.member;
 
 import java.util.Set;
 
+import org.macchinetta.member.manage.domain.mapper.MemberMapper;
 import org.macchinetta.member.manage.domain.model.Member;
-import org.macchinetta.member.manage.domain.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberServiceImpl implements MemberService {
 
 	@Autowired
-	MemberRepository memberRepository;
+	MemberMapper memberRepository;
 	
 	@Override
 	public Set<Member> findAll() {

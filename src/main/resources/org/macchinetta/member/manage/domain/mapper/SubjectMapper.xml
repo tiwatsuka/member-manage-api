@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.macchinetta.member.manage.domain.mapper.SubjectMapper">
+
+    <resultMap id="subjectResultMap" type="org.macchinetta.member.manage.domain.model.Subject">
+		<id property="id" column="subject_id" />
+		<result property="name" column="subject_name" />
+		<collection property="tags" ofType="org.macchinetta.member.manage.domain.model.Tag">
+		    <id property="id" column="tag_id" />
+			<result property="name" column="tag_name" />
+		</collection>
+	</resultMap>
+
+
+    <select id="findOne" resultMap="subjectResultMap">
+    <![CDATA[
+            SELECT 
+                t3.subject_id,
+                t3.subject_name,
+                t3.tag_id,
+                t4.tag_name 
+            FROM
+                t_tag t4,
+			    (SELECT
+			         t1.subject_id,
+			         t1.subject_name,
+			         t2.tag_id 
+			     FROM
+			         t_subject_tag t2,
+			         (SELECT
+			             t0.subject_id,
+			             t0.subject_name
+			          FROM
+			             t_subject t0 
+			          WHERE
+			             t0.subject_id = #{id}) t1
+			     WHERE 
+			         t1.subject_id = t2.subject_id) t3
+			WHERE 
+			     t3.tag_id = t4.tag_id
+    ]]>
+    </select>
+</mapper>

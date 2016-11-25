@@ -1,15 +1,19 @@
-package org.macchinetta.member.manage.domain.repository;
+package org.macchinetta.member.manage.domain.mapper;
 
 import java.util.Set;
 
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import org.macchinetta.member.manage.domain.model.Member;
 
-public interface MemberRepository {
+@Mapper
+public interface MemberMapper {
 
 	Set<Member> findAll();
 	
 	Set<Member> findByGroupId(long groupId);
 	
+	@Select("SELECT member_id, member_name, email, phone FROM t_member WHERE member_id = #{id}")
 	Member findOne(long id);
 
 	Member create(Member member);

@@ -2,8 +2,8 @@ package org.macchinetta.member.manage.domain.service.group;
 
 import java.util.Set;
 
+import org.macchinetta.member.manage.domain.mapper.GroupMapper;
 import org.macchinetta.member.manage.domain.model.Group;
-import org.macchinetta.member.manage.domain.repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class GroupServiceImpl implements GroupService {
 
 	@Autowired
-	GroupRepository groupRepository;
+	GroupMapper groupRepository;
 
 	@Override
 	public Set<Group> findAll() {

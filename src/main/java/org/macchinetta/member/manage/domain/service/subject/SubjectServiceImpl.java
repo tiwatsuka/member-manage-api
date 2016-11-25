@@ -2,10 +2,10 @@ package org.macchinetta.member.manage.domain.service.subject;
 
 import java.util.Set;
 
+import org.macchinetta.member.manage.domain.mapper.SubjectMapper;
 import org.macchinetta.member.manage.domain.model.Group;
 import org.macchinetta.member.manage.domain.model.Subject;
 import org.macchinetta.member.manage.domain.model.SubjectDetails;
-import org.macchinetta.member.manage.domain.repository.SubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SubjectServiceImpl implements SubjectService {
 
 	@Autowired
-	SubjectRepository subjectRepository;
+	SubjectMapper subjectRepository;
 	
 	@Override
 	public Set<Subject> findAll() {

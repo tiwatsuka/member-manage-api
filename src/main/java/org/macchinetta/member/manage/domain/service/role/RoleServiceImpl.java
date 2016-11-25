@@ -2,8 +2,8 @@ package org.macchinetta.member.manage.domain.service.role;
 
 import java.util.Set;
 
+import org.macchinetta.member.manage.domain.mapper.RoleMapper;
 import org.macchinetta.member.manage.domain.model.Role;
-import org.macchinetta.member.manage.domain.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class RoleServiceImpl implements RoleService {
 
 	@Autowired
-	RoleRepository roleRepository;
+	RoleMapper roleRepository;
 
 	@Override
 	public Set<Role> findAll() {
