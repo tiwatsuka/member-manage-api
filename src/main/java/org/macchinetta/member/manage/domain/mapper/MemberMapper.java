@@ -3,7 +3,7 @@ package org.macchinetta.member.manage.domain.mapper;
 import java.util.Set;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Param;
 import org.macchinetta.member.manage.domain.model.Member;
 
 @Mapper
@@ -13,7 +13,6 @@ public interface MemberMapper {
 	
 	Set<Member> findByGroupId(long groupId);
 	
-	@Select("SELECT member_id, member_name, email, phone FROM t_member WHERE member_id = #{id}")
 	Member findOne(long id);
 
 	Member create(Member member);
@@ -22,9 +21,15 @@ public interface MemberMapper {
 
 	boolean update(Member member);
 
-	boolean addRole(long subjectId, long groupId, long memberId, long roleId);
+	boolean addRole(@Param("subjectId") long subjectId,
+			@Param("groupId") long groupId,
+			@Param("memberId") long memberId,
+			@Param("roleId") long roleId);
 
-	boolean removeRole(long subjectId, long groupId, long memberId, long roleId);
+	boolean removeRole(@Param("subjectId") long subjectId,
+			@Param("groupId") long groupId,
+			@Param("memberId") long memberId,
+			@Param("roleId") long roleId);
 	
 	boolean removeMemberFromAllSubject(long memberId);
 

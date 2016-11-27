@@ -13,32 +13,32 @@ import org.springframework.transaction.annotation.Transactional;
 public class TagServiceImpl implements TagService {
 
 	@Autowired
-	TagMapper tagRepository;
+	TagMapper tagMapper;
 
 	@Override
 	public Set<Tag> findAll() {
-		return tagRepository.findAll();
+		return tagMapper.findAll();
 	}
 
 	@Override
 	public Tag findOne(long id) {
-		return tagRepository.findOne(id);
+		return tagMapper.findOne(id);
 	}
 
 	@Override
 	public Tag create(Tag tag) {
-		return tagRepository.create(tag);
+		return tagMapper.create(tag);
 	}
 
 	@Override
 	public boolean delete(long id) {
-		tagRepository.removeTagFromAllSubject(id);
-		return tagRepository.delete(id);
+		tagMapper.removeTagFromAllSubject(id);
+		return tagMapper.delete(id);
 	}
 
 	@Override
 	public boolean update(Tag tag) {
-		return tagRepository.update(tag);
+		return tagMapper.update(tag);
 	}
 
 }

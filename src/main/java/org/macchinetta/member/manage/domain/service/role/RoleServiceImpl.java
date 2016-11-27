@@ -13,32 +13,32 @@ import org.springframework.transaction.annotation.Transactional;
 public class RoleServiceImpl implements RoleService {
 
 	@Autowired
-	RoleMapper roleRepository;
+	RoleMapper roleMapper;
 
 	@Override
 	public Set<Role> findAll() {
-		return roleRepository.findAll();
+		return roleMapper.findAll();
 	}
 
 	@Override
 	public Role findOne(long id) {
-		return roleRepository.findOne(id);
+		return roleMapper.findOne(id);
 	}
 
 	@Override
 	public Role create(Role role) {
-		return roleRepository.create(role);
+		return roleMapper.create(role);
 	}
 
 	@Override
 	public boolean delete(long id) {
-		roleRepository.removRoleFromAllSubjects(id);
-		return roleRepository.delete(id);
+		roleMapper.removRoleFromAllSubjects(id);
+		return roleMapper.delete(id);
 	}
 
 	@Override
 	public boolean update(Role role) {
-		return roleRepository.update(role);
+		return roleMapper.update(role);
 	}
 
 }

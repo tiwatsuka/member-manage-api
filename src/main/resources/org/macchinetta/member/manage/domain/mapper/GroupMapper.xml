@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.macchinetta.member.manage.domain.mapper.GroupMapper">
+
+	<resultMap id="groupResultMap" type="Group">
+		<id property="id" column="group_id" />
+		<result property="name" column="group_name" />
+	</resultMap>
+
+	<select id="findOne" resultMap="groupResultMap">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			t_group
+		WHERE
+			group_id = #{id}
+	]]>
+	</select>
+
+	<select id="findAll" resultMap="groupResultMap">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			t_group
+	]]>
+	</select>
+
+    <insert id="create"
+    	useGeneratedKeys="true"
+    	parameterType="Group"
+    	keyProperty="id"
+    	keyColumn="group_id">
+    <![CDATA[
+    	INSERT INTO
+    		t_group (group_name)
+    	VALUES
+    		(#{name})
+    ]]>
+    </insert>
+    
+    <update id="update" parameterType="Group">
+    <![CDATA[
+    	UPDATE
+    		t_group
+    	SET
+    		group_name = #{name}
+    	WHERE
+    		group_id = #{id}
+    ]]>
+    </update>
+
+   	<delete id="delete">
+	<![CDATA[
+		DELETE FROM
+			t_group
+		WHERE
+			group_id = #{id}
+	]]>
+	</delete>
+
+	<delete id="removeGroupFromAllSubjects">
+	<![CDATA[
+		DELETE FROM
+			t_subject_detail
+		WHERE
+			group_id = #{id}
+	]]>
+	</delete>
+</mapper>

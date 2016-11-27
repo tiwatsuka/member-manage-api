@@ -10,7 +10,11 @@ public class SubjectDetails implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Subject subject;
+	private long id;
+
+	private String name;
+
+	private Set<Tag> tags;
 	
 	private Set<GroupInSubject> groups;
 

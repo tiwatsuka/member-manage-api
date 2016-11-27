@@ -13,42 +13,42 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberServiceImpl implements MemberService {
 
 	@Autowired
-	MemberMapper memberRepository;
+	MemberMapper memberMapper;
 	
 	@Override
 	public Set<Member> findAll() {
-		return memberRepository.findAll();
+		return memberMapper.findAll();
 	}
 
 	@Override
 	public Member findOne(long id) {
-		return memberRepository.findOne(id);
+		return memberMapper.findOne(id);
 	}
 
 	@Override
 	public Member create(Member member) {
-		return memberRepository.create(member);
+		return memberMapper.create(member);
 	}
 
 	@Override
 	public boolean delete(long id) {
-		memberRepository.removeMemberFromAllSubject(id);
-		return memberRepository.delete(id);
+		memberMapper.removeMemberFromAllSubject(id);
+		return memberMapper.delete(id);
 	}
 
 	@Override
 	public boolean update(Member member) {
-		return memberRepository.update(member);
+		return memberMapper.update(member);
 	}
 
 	@Override
 	public boolean addRole(long subjectId, long groupId, long memberId, long roleId) {
-		return memberRepository.addRole(subjectId, groupId, memberId, roleId);
+		return memberMapper.addRole(subjectId, groupId, memberId, roleId);
 	}
 
 	@Override
 	public boolean removeRole(long subjectId, long groupId, long memberId, long roleId) {
-		return memberRepository.removeRole(subjectId, groupId, memberId, roleId);
+		return memberMapper.removeRole(subjectId, groupId, memberId, roleId);
 	}
 
 }

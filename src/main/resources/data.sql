@@ -1,8 +1,16 @@
 DELETE t_subject_tag;
+DELETE t_subject_detail;
 DELETE t_subject;
 DELETE t_tag;
+DELETE t_group;
+DELETE t_role;
+DELETE t_member;
 INSERT INTO t_subject (subject_id, subject_name) VALUES (0, 'subject');
+INSERT INTO t_group (group_id, group_name) VALUES (0, 'group');
 INSERT INTO t_tag (tag_id, tag_name) VALUES (0, 'tag');
 INSERT INTO t_tag (tag_id, tag_name) VALUES (1, 'tag2');
+INSERT INTO t_member (member_id, member_name, email, phone) VALUES (0, 'member', 'email@mail', '000-0000-0000');
+INSERT INTO t_role (role_id, role_name) VALUES (0, 'role');
 INSERT INTO t_subject_tag (subject_id, tag_id) VALUES (0, 0);
 INSERT INTO t_subject_tag (subject_id, tag_id) VALUES (0, 1);
+INSERT INTO t_subject_detail (subject_id, group_id, member_id, role_id) VALUES (0, 0, 0, 0);

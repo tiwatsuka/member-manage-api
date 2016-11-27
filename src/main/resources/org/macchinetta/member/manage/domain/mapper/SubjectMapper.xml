@@ -4,17 +4,80 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.macchinetta.member.manage.domain.mapper.SubjectMapper">
 
-    <resultMap id="subjectResultMap" type="org.macchinetta.member.manage.domain.model.Subject">
+    <resultMap id="subjectDetailResultMap" type="SubjectDetails">
+   		<id property="id" column="subject_id" />
+		<result property="name" column="subject_name" />
+		<collection property="tags" ofType="Tag">
+	    	<id property="id" column="tag_id" />
+			<result property="name" column="tag_name" />
+		</collection>
+		<collection property="groups" ofType="GroupInSubject">
+			<association property="group" javaType="Group">
+				<id property="id" column="group_id" />
+				<result property="name" column="group_name" />
+			</association>
+			<collection property="members" ofType="MemberInSubject">
+				<association property="member" javaType="Member">
+					<id property="id" column="member_id" />
+					<result property="name" column="member_name" />
+					<result property="email" column="email" />
+					<result property="phone" column="phone" />
+				</association>
+				<collection property="roles" ofType="Role">
+					<id property="id" column="role_id" />
+					<result property="name" column="role_name" />
+				</collection>
+			</collection>
+		</collection>
+	</resultMap>
+
+    <resultMap id="subjectResultMap" type="Subject">
 		<id property="id" column="subject_id" />
 		<result property="name" column="subject_name" />
-		<collection property="tags" ofType="org.macchinetta.member.manage.domain.model.Tag">
+		<collection property="tags" ofType="Tag">
 		    <id property="id" column="tag_id" />
 			<result property="name" column="tag_name" />
 		</collection>
 	</resultMap>
 
+	<resultMap id="groupResultMap" type="Group">
+		<id property="id" column="group_id" />
+		<result property="name" column="group_name" />
+	</resultMap>
 
     <select id="findOne" resultMap="subjectResultMap">
+    <![CDATA[
+            SELECT 
+                t1.subject_id,
+                t1.subject_name,
+                t3.tag_id,
+                t4.tag_name 
+            FROM
+            	(SELECT
+		             t0.subject_id,
+		             t0.subject_name
+		          FROM
+		             t_subject t0 
+		          WHERE
+		             t0.subject_id = #{id}) t1
+		    LEFT JOIN
+			    (SELECT
+			         t2.subject_id,
+			         t2.tag_id 
+			     FROM
+			         t_subject_tag t2
+			     WHERE 
+			         t2.subject_id = #{id}) t3
+			ON
+				t1.subject_id = t3.subject_id
+			LEFT JOIN
+				t_tag t4
+			ON
+			    t3.tag_id = t4.tag_id
+    ]]>
+    </select>
+
+    <select id="findAll" resultMap="subjectResultMap">
     <![CDATA[
             SELECT 
                 t3.subject_id,
@@ -22,24 +85,220 @@
                 t3.tag_id,
                 t4.tag_name 
             FROM
-                t_tag t4,
 			    (SELECT
 			         t1.subject_id,
 			         t1.subject_name,
 			         t2.tag_id 
 			     FROM
-			         t_subject_tag t2,
-			         (SELECT
-			             t0.subject_id,
-			             t0.subject_name
-			          FROM
-			             t_subject t0 
-			          WHERE
-			             t0.subject_id = #{id}) t1
-			     WHERE 
+			     	 t_subject t1
+			     LEFT JOIN
+			         t_subject_tag t2
+			     ON 
 			         t1.subject_id = t2.subject_id) t3
-			WHERE 
-			     t3.tag_id = t4.tag_id
+			LEFT JOIN
+				t_tag t4
+			ON 
+			    t3.tag_id = t4.tag_id
     ]]>
     </select>
+
+	<select id="findGroups" resultMap="groupResultMap">
+    <![CDATA[
+    	SELECT
+    		t1.group_id,
+    		t2.group_name
+    	FROM
+        	(SELECT 
+            	t0.group_id
+        	FROM
+        		t_subject_detail t0
+			WHERE
+				t0.subject_id = #{subjectId}) t1
+		LEFT JOIN
+			t_group t2
+		ON
+			t1.group_id = t2.group_id
+    ]]>
+    </select>
+
+	<select id="findByMemberId" resultType="Group">
+    <![CDATA[
+            SELECT 
+                t4.subject_id,
+                t4.subject_name,
+                t4.tag_id,
+                t5.tag_name 
+            FROM
+            	(SELECT
+            		t2.subject_id,
+            		t2.subject_name,
+            		t3.tag_id
+            	FROM
+            		(SELECT
+            	    	t0.subject_id,
+	            	    t1.subject_name
+    	        	 FROM
+        	    	 	t_subject_detail t0
+            		 LEFT JOIN
+            		 	t_subject t1
+            	 	 ON
+	            	 	t0.subject_id = t1.subject_id
+    	        	 WHERE
+        	    	 	t0.member_id = #{memberId}) t2
+            	LEFT JOIN
+            		t_subject_tag t3
+            	ON
+            		t2.subject_id = t3.subject_id) t4
+			LEFT JOIN
+				t_tag t5
+			ON 
+			    t4.tag_id = t5.tag_id
+    ]]>
+    </select>
+
+	<select id="findByGroupId" resultMap="subjectResultMap">
+    <![CDATA[
+            SELECT 
+                t4.subject_id,
+                t4.subject_name,
+                t4.tag_id,
+                t5.tag_name 
+            FROM
+            	(SELECT
+            		t2.subject_id,
+            		t2.subject_name,
+            		t3.tag_id
+            	FROM
+            		(SELECT
+            	    	t0.subject_id,
+	            	    t1.subject_name
+    	        	 FROM
+        	    	 	t_subject_detail t0
+            		 LEFT JOIN
+            		 	t_subject t1
+            	 	 ON
+	            	 	t0.subject_id = t1.subject_id
+    	        	 WHERE
+        	    	 	t0.member_id = #{memberId}) t2
+            	LEFT JOIN
+            		t_subject_tag t3
+            	ON
+            		t2.subject_id = t3.subject_id) t4
+			LEFT JOIN
+				t_tag t5
+			ON 
+			    t4.tag_id = t5.tag_id
+    ]]>
+    </select>
+
+	<select id="findDetails" resultMap="subjectDetailResultMap">
+	<![CDATA[
+		SELECT
+			t1.subject_id,
+			t1.subject_name,
+			t6.tag_id,
+			t6.tag_name,
+			t2.group_id,
+			t2.group_name,
+			t3.member_id,
+			t3.member_name,
+			t3.email,
+			t3.phone,
+			t4.role_id,
+			t4.role_name
+		FROM
+			(SELECT
+				*
+			FROM
+				t_subject_detail t0
+			WHERE
+				t0.subject_id = #{id}) t
+			LEFT JOIN
+				t_subject t1 ON t.subject_id = t1.subject_id
+			LEFT JOIN
+				t_group t2 ON t.group_id = t2.group_id
+			LEFT JOIN
+				t_member t3 ON t.member_id = t3.member_id
+			LEFT JOIN
+				t_role t4 ON t.role_id = t4.role_id
+			LEFT JOIN
+				t_subject_tag t5 ON t.subject_id = t5.subject_id
+			LEFT JOIN
+				t_tag t6 ON t5.tag_id = t6.tag_id
+	]]>
+	</select>
+
+    <insert id="create"
+    	useGeneratedKeys="true"
+    	parameterType="Subject"
+    	keyProperty="id"
+    	keyColumn="subject_id">
+    <![CDATA[
+    	INSERT INTO
+    		t_subject (subject_name)
+    	VALUES
+    		(#{name})
+    ]]>
+    </insert>
+    
+    <update id="update" parameterType="Subject">
+    <![CDATA[
+    	UPDATE
+    		t_subject
+    	SET
+    		subject_name = #{name}
+    	WHERE
+    		subject_id = #{id}
+    ]]>
+    </update>
+    
+    <insert id="addTag">
+    <![CDATA[
+    	INSERT INTO
+    		t_subject_tag (subject_id, tag_id)
+    	VALUES
+    		(#{subjectId}, #{tagId})
+    ]]>
+    </insert>
+
+	<delete id="delete">
+	<![CDATA[
+		DELETE FROM
+			t_subject
+		WHERE
+			subject_id = #{id}
+	]]>
+	</delete>
+
+    <delete id="removeTag">
+    <![CDATA[
+    	DELETE FROM
+    		t_subject_tag
+    	WHERE
+    		subject_id = #{subjectId}
+    		AND
+    		tag_id = #{tagId}
+    ]]>
+    </delete>
+
+    <delete id="removeAllMembersInGroup">
+    <![CDATA[
+    	DELETE FROM
+    		t_subject_detail
+    	WHERE
+    		subject_id = #{subjectId}
+    		AND
+    		group_id = #{groupId}
+    ]]>
+    </delete>
+
+    <delete id="removeAllMembers">
+    <![CDATA[
+    	DELETE FROM
+    		t_subject_detail
+    	WHERE
+    		subject_id = #{subjectId}
+    ]]>
+    </delete>
+    
 </mapper>

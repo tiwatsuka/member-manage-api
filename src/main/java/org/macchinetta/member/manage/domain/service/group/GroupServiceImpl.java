@@ -13,33 +13,33 @@ import org.springframework.transaction.annotation.Transactional;
 public class GroupServiceImpl implements GroupService {
 
 	@Autowired
-	GroupMapper groupRepository;
+	GroupMapper groupMapper;
 
 	@Override
 	public Set<Group> findAll() {
-		return groupRepository.findAll();
+		return groupMapper.findAll();
 	}
 
 	@Override
 	public Group findOne(long id) {
-		return groupRepository.findOne(id);
+		return groupMapper.findOne(id);
 	}
 
 	@Override
 	public Group create(Group group) {
-		return groupRepository.create(group);
+		groupMapper.create(group);
+		return group;
 	}
 
 	@Override
 	public boolean delete(long id) {
-		groupRepository.removeAllMembersInGroupFromAllSubjects(id);
-		groupRepository.removeGroupFromAllSubjects(id);
-		return groupRepository.delete(id);
+		groupMapper.removeGroupFromAllSubjects(id);
+		return groupMapper.delete(id);
 	}
 
 	@Override
 	public boolean update(Group group) {
-		return groupRepository.update(group);
+		return groupMapper.update(group);
 	}
 
 }

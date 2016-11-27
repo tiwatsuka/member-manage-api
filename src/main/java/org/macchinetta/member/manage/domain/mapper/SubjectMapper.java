@@ -3,6 +3,7 @@ package org.macchinetta.member.manage.domain.mapper;
 import java.util.Set;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.macchinetta.member.manage.domain.model.Group;
 import org.macchinetta.member.manage.domain.model.Subject;
 import org.macchinetta.member.manage.domain.model.SubjectDetails;
@@ -18,23 +19,17 @@ public interface SubjectMapper {
 
 	Subject findOne(long id);
 
-	Subject create(Subject subject);
+	long create(Subject subject);
 
 	boolean delete(long id);
 
 	boolean update(Subject subject);
 
-	boolean addTag(long subjectId, long tagId);
+	boolean addTag(@Param("subjectId") long subjectId, @Param("tagId") long tagId);
 
-	boolean removeTag(long subjectId, long tagId);
+	boolean removeTag(@Param("subjectId") long subjectId, @Param("tagId") long tagId);
 
-	boolean addGroup(long subjectId, long groupId);
-
-	boolean removeGroup(long subjectId, long groupId);
-
-	boolean removeAllGroups(long subjectId);
-
-	boolean removeAllMembersInGroup(long subjectId, long groupId);
+	boolean removeAllMembersInGroup(@Param("subjectId") long subjectId, @Param("groupId") long groupId);
 	
 	boolean removeAllMembers(long subjectId);
 	

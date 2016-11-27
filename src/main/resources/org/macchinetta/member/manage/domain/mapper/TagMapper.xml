@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.macchinetta.member.manage.domain.mapper.TagMapper">
+	<resultMap id="tagResultMap" type="Tag">
+		<id property="id" column="tag_id" />
+		<result property="name" column="tag_name" />
+	</resultMap>
+
+	<select id="findOne" resultMap="tagResultMap">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			t_tag
+		WHERE
+			tag_id = #{id}
+	]]>
+	</select>
+
+	<select id="findAll" resultMap="tagResultMap">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			t_tag
+	]]>
+	</select>
+
+    <insert id="create"
+    	useGeneratedKeys="true"
+    	parameterType="Tag"
+    	keyProperty="id"
+    	keyColumn="tag_id">
+    <![CDATA[
+    	INSERT INTO
+    		t_tag (tag_name)
+    	VALUES
+    		(#{name})
+    ]]>
+    </insert>
+    
+    <update id="update" parameterType="Tag">
+    <![CDATA[
+    	UPDATE
+    		t_tag
+    	SET
+    		tag_name = #{name}
+    	WHERE
+    		tag_id = #{id}
+    ]]>
+    </update>
+
+   	<delete id="delete">
+	<![CDATA[
+		DELETE FROM
+			t_tag
+		WHERE
+			tag_id = #{id}
+	]]>
+	</delete>
+
+	<delete id="removeTagFromAllSubject">
+		DELETE FROM
+			t_subject_tag
+		WHERE
+			tag_id = #{id}
+	</delete>
+</mapper>

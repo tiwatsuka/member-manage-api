@@ -26,9 +26,9 @@ public interface SubjectService {
 
 	boolean removeTag(long subjectId, long tagId);
 
-	boolean addGroup(long subjectId, long groupId);
+	boolean removeAllMembersInGroup(long subjectId, long groupId);
 
-	boolean removeGroup(long subjectId, long groupId);
+	boolean removeAllMembers(long subjectId);
 
 	Set<Group> findGroups(long subjectId); 
 

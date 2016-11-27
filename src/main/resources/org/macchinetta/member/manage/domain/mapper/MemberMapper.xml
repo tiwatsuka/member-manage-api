@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.macchinetta.member.manage.domain.mapper.MemberMapper">
+
+	<resultMap id="memberResultMap" type="Member">
+		<id property="id" column="member_id" />
+		<result property="name" column="member_name" />
+		<result property="email" column="email" />
+		<result property="phone" column="phone" />
+	</resultMap>
+
+	<select id="findOne" resultMap="memberResultMap">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			t_member
+		WHERE
+			member_id = #{id}
+	]]>
+	</select>
+
+	<select id="findAll" resultMap="memberResultMap">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			t_member
+	]]>
+	</select>
+
+    <insert id="create"
+    	useGeneratedKeys="true"
+    	parameterType="Member"
+    	keyProperty="id"
+    	keyColumn="member_id">
+    <![CDATA[
+    	INSERT INTO
+    		t_member (member_name, email, phone)
+    	VALUES
+    		(#{name}, #{email}, #{phone})
+    ]]>
+    </insert>
+    
+    <update id="update" parameterType="Member">
+    <![CDATA[
+    	UPDATE
+    		t_member
+    	SET
+    		member_name = #{name},
+    		email = #{email},
+    		phone = #{phone}
+    	WHERE
+    		member_id = #{id}
+    ]]>
+    </update>
+
+   	<delete id="delete">
+	<![CDATA[
+		DELETE FROM
+			t_member
+		WHERE
+			member_id = #{id}
+	]]>
+	</delete>
+
+	<insert id="addRole">
+		INSERT INTO
+			t_subject_detail (subject_id, group_id, member_id, role_id)
+		VALUES
+			(#{subjectId}, #{groupId}, #{memberId}, #{roleId})
+	</insert>
+
+	<delete id="removeRole">
+		DELETE FROM
+			t_subject_detail
+		WHERE
+			suject_id = #{subjectId}
+			AND
+			group_id = #{groupId}
+			AND
+			member_id = #{memberId}
+			AND
+			role_id = #{roleId}
+	</delete>
+
+	<delete id="removeMemberFromAllSubject">
+		DELETE FROM
+			t_subject_detail
+		WHERE
+			member_id = #{memberId}
+	</delete>
+</mapper>

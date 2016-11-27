@@ -1,11 +1,14 @@
 package org.macchinetta.member.manage.domain.service.subject;
 
-import java.util.Set;
+import java.util.Collections;
+import java.util.Set;	
+import java.util.stream.Collectors;
 
 import org.macchinetta.member.manage.domain.mapper.SubjectMapper;
 import org.macchinetta.member.manage.domain.model.Group;
 import org.macchinetta.member.manage.domain.model.Subject;
 import org.macchinetta.member.manage.domain.model.SubjectDetails;
+import org.macchinetta.member.manage.domain.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,90 +18,101 @@ import org.springframework.transaction.annotation.Transactional;
 public class SubjectServiceImpl implements SubjectService {
 
 	@Autowired
-	SubjectMapper subjectRepository;
+	SubjectMapper subjectMapper;
 	
 	@Override
 	public Set<Subject> findAll() {
-		return subjectRepository.findAll();
+		return subjectMapper.findAll();
 	}
 
 	@Override
 	public Subject findOne(long id) {
-		return subjectRepository.findOne(id);
+		return subjectMapper.findOne(id);
 	}
 
 	@Override
 	public Subject create(Subject subject) {
-		Subject result = subjectRepository.create(subject);
+		subjectMapper.create(subject);
 		subject.getTags().stream()
-			.forEach(tag -> subjectRepository.addTag(subject.getId(), tag.getId()));
-		return result;
+			.forEach(tag -> subjectMapper.addTag(subject.getId(), tag.getId()));
+		return subjectMapper.findOne(subject.getId());
 	}
 
 	@Override
 	public boolean delete(long id) {
-		subjectRepository.findOne(id)
-			.getTags()
+		Subject subject = subjectMapper.findOne(id);
+		if(subject == null) return false;
+		subject.getTags()
 			.stream()
-			.forEach(tag -> subjectRepository.removeTag(id, tag.getId()));
-		subjectRepository.removeAllMembers(id);
-		subjectRepository.removeAllGroups(id);
-		return subjectRepository.delete(id);
+			.forEach(tag -> subjectMapper.removeTag(id, tag.getId()));
+		subjectMapper.removeAllMembers(id);
+		return subjectMapper.delete(id);
 	}
 
 	@Override
 	public boolean update(Subject subject) {
-		Subject old = subjectRepository.findOne(subject.getId());
-		subject.getTags()
-				.stream()
-				.filter(tag -> !old.getTags().contains(tag))
-				.forEach(tag -> subjectRepository.addTag(subject.getId(), tag.getId()));
-		old.getTags()
-			.stream()
-			.filter(tag -> !subject.getTags().contains(tag))
-			.forEach(tag -> subjectRepository.removeTag(subject.getId(), tag.getId()));
-		return subjectRepository.update(subject);
+		Subject old = subjectMapper.findOne(subject.getId());
+		if(old == null) return false;
+		Set<Long> tagIds = subject.getTags().stream().map(Tag::getId).collect(Collectors.toSet());
+		Set<Long> oldTagIds = old.getTags().stream().map(Tag::getId).collect(Collectors.toSet());
+		tagIds.stream()
+			  .filter(tagId -> !oldTagIds.contains(tagId))
+			  .forEach(tagId -> subjectMapper.addTag(subject.getId(), tagId));
+		oldTagIds.stream()
+		   		 .filter(tagId -> !tagIds.contains(tagId))
+		   		 .forEach(tagId -> subjectMapper.removeTag(subject.getId(), tagId));
+		return subjectMapper.update(subject);
 	}
 
 	@Override
 	public boolean addTag(long subjectId, long tagId) {
-		return subjectRepository.addTag(subjectId, tagId);
+		return subjectMapper.addTag(subjectId, tagId);
 	}
 
 	@Override
 	public boolean removeTag(long subjectId, long tagId) {
-		return subjectRepository.removeTag(subjectId, tagId);
-	}
-
-	@Override
-	public boolean addGroup(long subjectId, long groupId) {
-		return subjectRepository.addGroup(subjectId, groupId);
-	}
-
-	@Override
-	public boolean removeGroup(long subjectId, long groupId) {
-		subjectRepository.removeAllMembersInGroup(subjectId, groupId);
-		return subjectRepository.removeGroup(subjectId, groupId);
+		return subjectMapper.removeTag(subjectId, tagId);
 	}
 
 	@Override
 	public Set<Group> findGroups(long subjectId) {
-		return subjectRepository.findGroups(subjectId);
+		return subjectMapper.findGroups(subjectId);
 	}
 
 	@Override
 	public SubjectDetails findDetails(long id) {
-		return subjectRepository.findDetails(id);
+		SubjectDetails details = subjectMapper.findDetails(id);
+		if(details == null){
+			Subject subject = subjectMapper.findOne(id);
+			if (subject != null){
+				details = new SubjectDetails();
+				details.setId(subject.getId());
+				details.setName(subject.getName());
+				details.setTags(subject.getTags());
+				details.setGroups(Collections.emptySet());
+			}
+		}
+		return details;
 	}
 
 	@Override
 	public Set<Subject> findByGroupId(long groupId) {
-		return subjectRepository.findByGroupId(groupId);
+		return subjectMapper.findByGroupId(groupId);
 	}
 
 	@Override
 	public Set<Subject> findByMemberId(long memberId) {
-		return subjectRepository.findByMemberId(memberId);
+		return subjectMapper.findByMemberId(memberId);
+	}
+
+	@Override
+	public boolean removeAllMembersInGroup(long subjectId, long groupId) {
+		return subjectMapper.removeAllMembersInGroup(subjectId, groupId);
+	}
+
+	@Override
+	public boolean removeAllMembers(long subjectId) {
+		return subjectMapper.removeAllMembers(subjectId);
 	}
 
 }

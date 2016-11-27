@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.macchinetta.member.manage.domain.mapper.RoleMapper">
+	<resultMap id="roleResultMap" type="Role">
+		<id property="id" column="role_id" />
+		<result property="name" column="role_name" />
+	</resultMap>
+
+	<select id="findOne" resultMap="roleResultMap">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			t_role
+		WHERE
+			role_id = #{id}
+	]]>
+	</select>
+
+	<select id="findAll" resultMap="roleResultMap">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			t_role
+	]]>
+	</select>
+
+    <insert id="create"
+    	useGeneratedKeys="true"
+    	parameterType="Role"
+    	keyProperty="id"
+    	keyColumn="role_id">
+    <![CDATA[
+    	INSERT INTO
+    		t_role (role_name)
+    	VALUES
+    		(#{name})
+    ]]>
+    </insert>
+    
+    <update id="update" parameterType="Role">
+    <![CDATA[
+    	UPDATE
+    		t_role
+    	SET
+    		role_name = #{name}
+    	WHERE
+    		role_id = #{id}
+    ]]>
+    </update>
+
+   	<delete id="delete">
+	<![CDATA[
+		DELETE FROM
+			t_role
+		WHERE
+			role_id = #{id}
+	]]>
+	</delete>
+
+	<delete id="removeRoleFromAllSubject">
+		DELETE FROM
+			t_subject_detail
+		WHERE
+			role_id = #{roleId}
+	</delete>
+</mapper>
